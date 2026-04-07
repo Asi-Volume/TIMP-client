@@ -49,7 +49,7 @@ Page {
                                 text: "Параметры"
                                 color: "#C7D8FF"
                                 font.pixelSize: 24
-                                font.bold: true
+                                font.bold:  true
                             }
 
                             Column {

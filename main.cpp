@@ -17,7 +17,3 @@ int main(int argc, char *argv[])
 
     return app.exec();
 }
-
-std::string govno() {
-    return "asdasd";
-}
