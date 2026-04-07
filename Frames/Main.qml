@@ -160,12 +160,16 @@ ApplicationWindow {
                                 font.bold: true
                                 horizontalAlignment: Text.AlignHCenter
                                 verticalAlignment: Text.AlignVCenter
+                                topPadding: 2
+                                leftPadding: 25
+                                rightPadding: 25
+                                bottomPadding: 2
                             }
                         hoverEnabled: true
-                        width: 150
-                        height: 45
 
                         background: Rectangle {
+                            implicitWidth: 0
+                            implicitHeight: 45
                             radius: 20
                             color: loginButton.down ? "#2F4E8E"
                                           : loginButton.hovered ? "#4C78D1"
@@ -204,8 +208,7 @@ ApplicationWindow {
                                cursorShape: Qt.PointingHandCursor
 
                                onClicked: {
-                                   console.log("переход на регистрацию")
-                                   console.log(govno());
+                                   stackView.push("Forget.qml")
                                }
                            }
                     }
