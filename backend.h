@@ -53,7 +53,7 @@ public:
         m_socket->write(request.toUtf8());
         m_socket->flush();
     }
-    Q_INVOKABLE void registration(const QString &email, const QString &login, const QString &password,const QString &password2) {
+    Q_INVOKABLE void registrations(const QString &email, const QString &login, const QString &password,const QString &password2) {
         if (email.trimmed().isEmpty()) {
             emit errorOccurred("Вы не ввели почту");
             return;
@@ -78,6 +78,7 @@ public:
             emit errorOccurred("Нет подключения к серверу");
             return;
         }
+
         QString request = QString("reg&%1&%2&%3\n").arg(login, password, email);
         m_socket->write(request.toUtf8());
         m_socket->flush();
@@ -85,6 +86,7 @@ public:
 signals:
     void errorOccurred(const QString &message);
     void loginSucceeded();
+    void registration();
     void statusChanged(const QString &message);
 private:
     void onReadyRead()
@@ -101,15 +103,12 @@ private:
             } else if (response == "auth-") {
                 emit errorOccurred("Неверный логин или пароль");
             } else if (response.startsWith("reg+&")) {
-                emit loginSucceeded();
+                emit registration();
             }
             else {
                 emit errorOccurred("Неизвестный ответ сервера: " + response);
             }
 
-            if (response.startsWith("reg+&")) {
-
-            }
         }
     }
     QTcpSocket *m_socket;

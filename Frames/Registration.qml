@@ -166,7 +166,7 @@ Page {
                 Buttons {
                     buttonText: "Зарегистрироваться"
                     onClicked: {
-                        Backend.registration(email.text, login.text, passwordField.text, passwordField2.text)
+                        Backend.registrations(email.text, login.text, passwordField.text, passwordField2.text)
                     }
                 }
                 Text {
@@ -191,13 +191,11 @@ Page {
     }
     Connections {
         target: Backend
-
         function onErrorOccurred(message) {
             error.visible = true
             errorText.text = message
         }
-
-        function onLoginSucceeded() {
+        function onRegistration() {
             error.visible = false
             errorText.text = ""
             stackView.pop()

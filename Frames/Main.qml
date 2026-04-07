@@ -274,5 +274,9 @@ ApplicationWindow {
             errorText.text = ""
             stackView.push("MainPage.qml")
         }
+        function onRegistration() {
+            error.visible = true
+            errorText.text = "Вы зарегистрировались!"
+        }
     }
 }
