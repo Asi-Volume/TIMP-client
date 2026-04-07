@@ -15,9 +15,9 @@ qt_add_executable(appproject
 qt_add_qml_module(appproject
     URI project
     QML_FILES
-        Main.qml
-        QML_FILES Registration.qml
-        QML_FILES Background.qml
+        Frames/Main.qml
+        QML_FILES Frames/Registration.qml
+        QML_FILES Components/Background.qml
 )
 
 # Qt for iOS sets MACOSX_BUNDLE_GUI_IDENTIFIER automatically since Qt 6.1.
