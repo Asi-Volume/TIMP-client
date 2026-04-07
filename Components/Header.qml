@@ -10,6 +10,7 @@ Column {
 
     Label {
         id: titleLabel
+        font.letterSpacing: 2
         text: "Регистрация"
         color: "#C7D8FF"
         font.pixelSize: 34

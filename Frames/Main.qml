@@ -1,6 +1,7 @@
 import QtQuick
 import QtQuick.Controls.Basic
 import QtQuick.Layouts
+import project
 
 ApplicationWindow {
     visible: true
@@ -79,6 +80,7 @@ ApplicationWindow {
 
             Label {
                 text: "Авторизация"
+                font.letterSpacing: 2
                 color: "#C7D8FF"
                 font.pixelSize: 34
                 font.bold: true
@@ -100,6 +102,46 @@ ApplicationWindow {
                     id: content
                     anchors.centerIn: parent
                     spacing: 14
+                    Rectangle {
+                        id: error
+                        radius: 12
+                        width: parent.width
+                        height: 40
+                        Layout.alignment: Qt.AlignHCenter
+                        color: "#3A1F2A"
+                        border.width: 0.2
+                        border.color: "#D95763"
+                        visible: false
+                        Row {
+                            anchors.centerIn: parent
+                            spacing: 10
+
+                            Rectangle {
+                                width: 24
+                                height: 24
+                                radius: width / 2
+                                border.width: 1
+                                border.color: "#FFD7DB"
+                                color: "#3A1F2A"
+
+                                Text {
+                                    anchors.centerIn: parent
+                                    anchors.verticalCenterOffset: -1
+                                    color: "#FFD7DB"
+                                    text: "!"
+                                    font.pixelSize: 16
+                                    font.bold: true
+                                }
+                            }
+                            Text {
+                                id: errorText
+                                font.pixelSize: 16
+                                font.bold: true
+                                color: "#FFD7DB"
+                                text: "Вы ввели неверные данные!"
+                            }
+                        }
+                    }
                     Text {
                         text: "Логин"
                         color: "#9FB0D0"
@@ -177,6 +219,9 @@ ApplicationWindow {
                             border.width: 1
                                     border.color: loginButton.hovered ? "#6B92E8" : "#3B5EA8"
                         }
+                        onClicked: {
+                            Backend.login(loginField.text, passwordField.text)
+                        }
                     }
                     Text {
                         anchors.horizontalCenter: parent.horizontalCenter
@@ -214,6 +259,20 @@ ApplicationWindow {
                     }
                 }
             }
+        }
+    }
+    Connections {
+        target: Backend
+
+        function onErrorOccurred(message) {
+            error.visible = true
+            errorText.text = message
+        }
+
+        function onLoginSucceeded() {
+            error.visible = false
+            errorText.text = ""
+            stackView.push("MainPage.qml")
         }
     }
 }
