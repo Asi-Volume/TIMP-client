@@ -27,7 +27,7 @@ Page {
                 anchors.centerIn: parent
                 spacing: 14
                 Rectangle {
-                    id: error
+                    id: errorh
                     radius: 12
                     width: parent.width
                     height: 40
@@ -58,7 +58,7 @@ Page {
                             }
                         }
                         Text {
-                            id: errorText
+                            id: errorhText
                             font.pixelSize: 16
                             font.bold: true
                             color: "#FFD7DB"
@@ -174,14 +174,18 @@ Page {
                     text: "У меня уже есть аккаунт"
                     font.pixelSize: 12
                     font.bold: true
-                    color: mouseArea.containsMouse ? "#4C78D1" : "#9FB0D0"
+                    color: mouseAreas.containsMouse ? "#4C78D1" : "#9FB0D0"
                     MouseArea {
-                           id: mouseArea
+                           id: mouseAreas
                            anchors.fill: parent
                            hoverEnabled: true
                            cursorShape: Qt.PointingHandCursor
 
                            onClicked: {
+                               errors.visible = false
+                               errorh.visible = false
+                               errorhText.text = ""
+                               errorsText.text = ""
                                stackView.pop()
                            }
                        }
@@ -192,12 +196,11 @@ Page {
     Connections {
         target: Backend
         function onErrorOccurred(message) {
-            error.visible = true
-            errorText.text = message
+            errorh.visible = true
+            errorhText.text = message
         }
         function onRegistration() {
-            error.visible = false
-            errorText.text = ""
+
             stackView.pop()
         }
     }

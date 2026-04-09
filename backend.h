@@ -24,7 +24,7 @@ public:
         });
 
         // сразу подключаемся к серверу
-        m_socket->connectToHost("192.168.1.12", 33333);
+        m_socket->connectToHost("172.20.10.4", 33333);
     }
 
     Q_INVOKABLE void login(const QString &login, const QString &password)
@@ -83,11 +83,57 @@ public:
         m_socket->write(request.toUtf8());
         m_socket->flush();
     }
+
+    Q_INVOKABLE void forgetpassword(const QString &email) {
+        if (request == true) {
+            emit errorOccurred("Пожалуйста подождите!");
+            return;
+        }
+        if (email.trimmed().isEmpty()) {
+            emit errorOccurred("Вы не ввели почту");
+            return;
+        }
+        if (m_socket->state() != QAbstractSocket::ConnectedState) {
+            emit errorOccurred("Нет подключения к серверу");
+            return;
+        }
+        request = true;
+        QString request = QString("recover_code&%1\n").arg(email);
+        m_socket->write(request.toUtf8());
+        m_socket->flush();
+    }
+    Q_INVOKABLE void codemail(const QString &email, const QString &code, const QString &password, const QString &newpassword) {
+        if (email.trimmed().isEmpty()) {
+            emit errorOccurred("Попробуйте снова.");
+            return;
+        }
+        if (code.trimmed().isEmpty()) {
+            emit errorOccurred("Вы не ввели код подтверждения.");
+            return;
+        }
+        if (password.trimmed().isEmpty()) {
+            emit errorOccurred("Вы не ввели новый пароль.");
+            return;
+        }
+        if (newpassword.trimmed().isEmpty()) {
+            emit errorOccurred("Вы не ввели повтор пароля.");
+            return;
+        }
+        if (password.trimmed().isEmpty() != newpassword.trimmed().isEmpty()) {
+            emit errorOccurred("Повтор пароля не верный!");
+            return;
+        }
+        QString request = QString("recover_conf&%1&%2&%3\n").arg(email, code, password);
+        m_socket->write(request.toUtf8());
+        m_socket->flush();
+    }
 signals:
     void errorOccurred(const QString &message);
     void loginSucceeded();
     void registration();
     void statusChanged(const QString &message);
+    void sendCode();
+    void recoverPassword();
 private:
     void onReadyRead()
     {
@@ -104,6 +150,14 @@ private:
                 emit errorOccurred("Неверный логин или пароль");
             } else if (response.startsWith("reg+&")) {
                 emit registration();
+            } else if (response == "recover_code-") {
+                request = false;
+                emit errorOccurred("Аккаунт не найден!");
+            } else if (response == "recover_code+") {
+                emit sendCode();
+                request=false;
+            } else if (response == "recover_conf+") {
+                emit recoverPassword();
             }
             else {
                 emit errorOccurred("Неизвестный ответ сервера: " + response);
@@ -112,6 +166,7 @@ private:
         }
     }
     QTcpSocket *m_socket;
+    bool request = false;
     QString m_buffer;
 };
 

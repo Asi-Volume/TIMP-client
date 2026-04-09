@@ -103,7 +103,7 @@ ApplicationWindow {
                     anchors.centerIn: parent
                     spacing: 14
                     Rectangle {
-                        id: error
+                        id: errors
                         radius: 12
                         width: parent.width
                         height: 40
@@ -134,7 +134,7 @@ ApplicationWindow {
                                 }
                             }
                             Text {
-                                id: errorText
+                                id: errorsText
                                 font.pixelSize: 16
                                 font.bold: true
                                 color: "#FFD7DB"
@@ -236,6 +236,8 @@ ApplicationWindow {
                                cursorShape: Qt.PointingHandCursor
 
                                onClicked: {
+                                   errors.visible=false
+                                   errorsText.text = ""
                                    stackView.push("Registration.qml")
                                }
                            }
@@ -265,18 +267,22 @@ ApplicationWindow {
         target: Backend
 
         function onErrorOccurred(message) {
-            error.visible = true
-            errorText.text = message
+            errors.visible = true
+            errorsText.text = message
         }
 
         function onLoginSucceeded() {
-            error.visible = false
-            errorText.text = ""
+            errors.visible = false
+            errorsText.text = ""
             stackView.push("MainPage.qml")
         }
         function onRegistration() {
-            error.visible = true
-            errorText.text = "Вы зарегистрировались!"
+            errors.visible = true
+            errorsText.text = "Вы зарегистрировались!"
+        }
+        function onRecoverPassword() {
+            errors.visible = true
+            errorsText.text = "Вы изменили пароль!"
         }
     }
 }

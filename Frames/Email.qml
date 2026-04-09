@@ -1,15 +1,16 @@
 import QtQuick
+import project
 import QtQuick.Controls.Basic
-import "../Components"
 import QtQuick.Layouts
 
 Page {
+    property string email: ""
     Background {
         anchors.fill: parent
         z: -1
     }
     Header {
-        titleText: "Поиск аккаунта"
+        titleText: "Отправлен код подтверждения на вашу почту"
     }
     ColumnLayout {
         anchors.fill: parent
@@ -66,14 +67,14 @@ Page {
                     }
                 }
                 Text {
-                    text: "Введите вашу электронную почту"
+                    text: "Введите ваш код подтверждения"
                     color: "#C7D8FF"
                     font.pixelSize: 16
                     font.bold: true
                 }
                 TextField {
                     id: loginField
-                    placeholderText: "например: hiimemail@email.com"
+                    placeholderText: "например: 3501204123"
                     color: "#F4F8FF"
                     placeholderTextColor: "#7F93B8"
                     width: 400
@@ -89,10 +90,59 @@ Page {
                         border.color: loginField.activeFocus ? "#5C84FF" : "#2A3F73"
                     }
                 }
+                Text {
+                    text: "Новый пароль"
+                    color: "#9FB0D0"
+                    font.pixelSize: 16
+                    font.bold: true
+                }
+                TextField {
+                    id: passwordField
+                    placeholderText: "Введите новый пароль"
+                    color: "#F4F8FF"
+                    placeholderTextColor: "#7F93B8"
+                    width: 400
+                    leftPadding: 10
+                    topPadding: 10
+                    bottomPadding: 10
+                    font.pixelSize: 16
+
+                    background: Rectangle {
+                        radius: 12
+                        color: "#162445"
+                        border.width: 1
+                        border.color: passwordField.activeFocus ? "#5C84FF" : "#2A3F73"
+                    }
+                }
+                Text {
+                    text: "Повтор пароля"
+                    color: "#9FB0D0"
+                    font.pixelSize: 16
+                    font.bold: true
+                }
+                TextField {
+                    id: passwordField2
+                    placeholderText: "Повторите пароль"
+                    color: "#F4F8FF"
+                    placeholderTextColor: "#7F93B8"
+                    width: 400
+                    leftPadding: 10
+                    topPadding: 10
+                    bottomPadding: 10
+                    font.pixelSize: 16
+                    echoMode: TextInput.Password
+
+                    background: Rectangle {
+                        radius: 12
+                        color: "#162445"
+                        border.width: 1
+                        border.color: passwordField2.activeFocus ? "#5C84FF" : "#2A3F73"
+                    }
+                }
                 Buttons {
                     buttonText: "Продолжить"
                     onClicked: {
-                        Backend.forgetpassword(loginField.text)
+                        Backend.codemail(email, loginField.text, passwordField.text, passwordField2.text)
                     }
                 }
                 Text {
@@ -108,9 +158,7 @@ Page {
                            cursorShape: Qt.PointingHandCursor
 
                            onClicked: {
-                               errors.visible=false
-                               errorsText.text=""
-                               stackView.pop()
+                               stackView.pop(null)
                            }
                        }
                 }
@@ -123,12 +171,8 @@ Page {
             errorh.visible = true
             errorhText.text = message
         }
-        function onSendCode() {
-            stackView.push("Email.qml", {
-                            "email": loginField.text
-                           })
-            errors.visible=false
-            errorsText.text=""
+        function onRecoverPassword() {
+            stackView.pop(null)
         }
     }
 }
