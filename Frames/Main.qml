@@ -274,7 +274,7 @@ ApplicationWindow {
         function onLoginSucceeded() {
             errors.visible = false
             errorsText.text = ""
-            stackView.push("MainPage.qml")
+            stackView.push("About.qml")
         }
         function onRegistration() {
             errors.visible = true
