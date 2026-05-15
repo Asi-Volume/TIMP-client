@@ -195,12 +195,11 @@ Page {
     }
     Connections {
         target: Backend
-        function onErrorOccurred(message) {
+        function onErrorOccurred(message) { 
             errorh.visible = true
             errorhText.text = message
         }
         function onRegistration() {
-
             stackView.pop()
         }
     }

@@ -66,14 +66,14 @@ Page {
                     }
                 }
                 Text {
-                    text: "Введите вашу электронную почту"
+                    text: "Введите ваш логин"
                     color: "#C7D8FF"
                     font.pixelSize: 16
                     font.bold: true
                 }
                 TextField {
                     id: loginField
-                    placeholderText: "например: hiimemail@email.com"
+                    placeholderText: "Логин"
                     color: "#F4F8FF"
                     placeholderTextColor: "#7F93B8"
                     width: 400
