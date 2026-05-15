@@ -24,7 +24,7 @@ public:
         });
 
         // сразу подключаемся к серверу
-        m_socket->connectToHost("172.20.10.4", 33333);
+        m_socket->connectToHost("172.20.10.2", 33333);
     }
 
     Q_INVOKABLE void login(const QString &login, const QString &password)
@@ -120,7 +120,7 @@ public:
             return;
         }
         if (password.trimmed().isEmpty() != newpassword.trimmed().isEmpty()) {
-            emit errorOccurred("Повтор пароля не верный!");
+            emit errorOccurred("Повтор пароля неверный!");
             return;
         }
         QString request = QString("recover_conf&%1&%2&%3\n").arg(email, code, password);
@@ -158,6 +158,8 @@ private:
                 request=false;
             } else if (response == "recover_conf+") {
                 emit recoverPassword();
+            } else if (response == "reg-") {
+                emit errorOccurred("Такой аккаунт уже существует!");
             }
             else {
                 emit errorOccurred("Неизвестный ответ сервера: " + response);
