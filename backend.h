@@ -39,7 +39,7 @@ public:
         });
 
         // сразу подключаемся к серверу
-        m_socket->connectToHost("172.20.10.2", 33333);
+        m_socket->connectToHost("127.0.0.1", 33333);
     }
 
     /**
